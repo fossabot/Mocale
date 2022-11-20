@@ -1,5 +1,4 @@
 using Mocale.Abstractions;
-using Mocale.Managers;
 using Mocale.Samples.ViewModels;
 using Mocale.Samples.Views;
 

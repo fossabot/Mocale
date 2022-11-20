@@ -2,6 +2,7 @@ using System.ComponentModel;
 using System.Globalization;
 using Microsoft.Extensions.Logging;
 using Mocale.Abstractions;
+using Mocale.Exceptions;
 
 namespace Mocale.Managers;
 
@@ -18,6 +19,8 @@ public class LocalizationManager : ILocalizationManager, INotifyPropertyChanged
 
     internal static ILocalizationManager Instance { get; private set; }
 
+    private bool initialized = false;
+
     public LocalizationManager(
         IConfigurationManager<IMocaleConfiguration> mocaleConfigurationManager,
         ILocalizationProvider localizationProvider,
@@ -29,9 +32,6 @@ public class LocalizationManager : ILocalizationManager, INotifyPropertyChanged
 
         CurrentCulture = mocaleConfiguration.DefaultCulture;
 
-        Localizations = localizationProvider.GetValuesForCulture(CurrentCulture);
-
-        //
         Instance = this;
     }
 
@@ -39,6 +39,11 @@ public class LocalizationManager : ILocalizationManager, INotifyPropertyChanged
     {
         get
         {
+            if (!initialized)
+            {
+                throw new NotInitializedException();
+            }
+
             if (!Localizations.ContainsKey(resourceKey))
             {
                 logger.LogWarning("Resource key not found '{0}'", resourceKey);
@@ -65,5 +70,16 @@ public class LocalizationManager : ILocalizationManager, INotifyPropertyChanged
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(null));
 
         logger.LogDebug("Updated localization culture to {0}", culture.Name);
+    }
+
+    private Guid InstanceGuid { get; } = Guid.NewGuid();
+
+    public Task InitializeAsync()
+    {
+        Localizations = localizationProvider.GetValuesForCulture(CurrentCulture);
+
+        initialized = true;
+
+        return Task.CompletedTask;
     }
 }

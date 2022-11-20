@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Logging;
 using Mocale.Abstractions;
 using Mocale.Managers;
 using Mocale.Models;
@@ -25,7 +26,18 @@ public static class AppBuilderExtensions
         mocaleBuilder.ConfigurationManager ??= new ConfigurationManager<IMocaleConfiguration>(new MocaleConfiguration());
 
         mauiAppBuilder.Services.AddSingleton<IConfigurationManager<IMocaleConfiguration>>(mocaleBuilder.ConfigurationManager);
-        mauiAppBuilder.Services.AddSingleton<ILocalizationManager, LocalizationManager>();
+
+        var serviceProvider = mauiAppBuilder.Services.BuildServiceProvider();
+
+        var localizationManager = new LocalizationManager(
+            mocaleBuilder.ConfigurationManager,
+            serviceProvider.GetRequiredService<ILocalizationProvider>(),
+            serviceProvider.GetRequiredService<ILogger<LocalizationManager>>());
+
+        var t = localizationManager.InitializeAsync();
+        t.Wait();
+
+        mauiAppBuilder.Services.AddSingleton<ILocalizationManager>(localizationManager);
 
         return mauiAppBuilder;
     }

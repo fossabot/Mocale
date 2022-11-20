@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Logging;
 using Mocale.Abstractions;
 using Mocale.Managers;
 using Mocale.Models;
@@ -21,5 +22,17 @@ public class MocaleBuilder
         ConfigurationManager = new ConfigurationManager<IMocaleConfiguration>(config);
 
         return this;
+    }
+}
+
+public static class MocaleBuilderExtensions
+{
+    public static MocaleBuilder WithLogging(this MocaleBuilder builder, Action<ILoggingBuilder> loggingBuilder)
+    {
+        loggingBuilder.Invoke(builder.AppBuilder.Logging);
+
+        builder.AppBuilder.Logging.AddFilter("Mocale", LogLevel.Trace);
+
+        return builder;
     }
 }
