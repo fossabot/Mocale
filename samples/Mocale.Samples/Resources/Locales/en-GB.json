@@ -4,5 +4,9 @@
   "LocalizationProviderName": "Json",
   "MocaleDescription": "Localization framework for .NET Maui",
   "MocaleTitle": "Mocale",
-  "ExternalPrefixExplanation": "Strings prefixed with GR_ indicate they have been pulled from the external provider (GitHub.Raw), when the local cache expires if these values change, so will the text displayed!"
+  "ExternalPrefixExplanation": "Strings prefixed with GR_ indicate they have been pulled from the external provider (GitHub.Raw), when the local cache expires if these values change, so will the text displayed!",
+  "StringFormatParameterHeader": "Below is an example of string formatting via parameter",
+  "LabelNumber": "I am label {0}",
+  "StringFormatBindingHeader": "Below is an example of string formatting via binding",
+  "TemperatureFormat": "The temperature is {0}°C."
 }

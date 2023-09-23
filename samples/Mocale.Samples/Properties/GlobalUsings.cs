@@ -1,2 +1,2 @@
 global using Mocale.Abstractions;
-global using MvvmHelpers;
+global using CommunityToolkit.Mvvm.ComponentModel;

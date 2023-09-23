@@ -1,7 +1,10 @@
 using System.Globalization;
+using MvvmHelpers;
+using ObservableObject = CommunityToolkit.Mvvm.ComponentModel.ObservableObject;
+
 namespace Mocale.Samples.ViewModels;
 
-public class IntroductionPageViewModel : BaseViewModel
+public partial class IntroductionPageViewModel : ObservableObject
 {
     private readonly ILocalizationManager localizationManager;
 
@@ -23,6 +26,9 @@ public class IntroductionPageViewModel : BaseViewModel
         }
     }
 
+    [ObservableProperty]
+    private int temperature;
+
     public IntroductionPageViewModel(ILocalizationManager localizationManager)
     {
         this.localizationManager = localizationManager;
@@ -37,6 +43,9 @@ public class IntroductionPageViewModel : BaseViewModel
         var selectedLocale = Locales.FirstOrDefault(localizationManager.CurrentCulture.Name.Equals);
 
         SelectedLocale = selectedLocale ?? Locales[0];
+
+        var random = new Random();
+        temperature = random.Next(1, 100);
     }
 
     private async void RaiseLocaleSelected(string oldValue, string newValue)
