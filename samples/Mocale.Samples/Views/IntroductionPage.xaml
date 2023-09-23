@@ -58,7 +58,7 @@
             <Label Text="{mocale:Localize Key={x:Static keys:TranslationKeys.LabelNumber}, Parameter=2}" />
 
             <Label Text="{mocale:Localize Key={x:Static keys:TranslationKeys.StringFormatBindingHeader}}" />
-            <Label Text="{mocale:Localize Key={x:Static keys:TranslationKeys.TemperatureFormat}}" />
+            <Label Text="{mocale:Localize Key={x:Static keys:TranslationKeys.TemperatureFormat}, Binding={Binding Temperature}}" />
 
         </VerticalStackLayout>
 
